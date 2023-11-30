@@ -1,0 +1,97 @@
+Q.1 Write a Java Program to implement Singleton pattern for multithreading.
+
+class LazySingletonObject
+{
+    private static LazySingletonObject  ins;
+     private LazySingletonObject()
+    {
+        System.out.println("Example of Lazy Singleton");
+    }
+    public static synchronized LazySingletonObject getins()
+    {
+        if(ins==null)
+        {
+            ins=new LazySingletonObject();
+         }
+        return ins;
+     }
+}
+public class LazySingleton
+{
+    public static void main(String args[])
+    {
+        Thread t1=new Thread(()->
+        {
+            LazySingletonObject o1=LazySingletonObject.getins();
+            System.out.println("Instance1");
+        });
+
+         Thread t2=new Thread(()->
+        {
+            LazySingletonObject o2=LazySingletonObject.getins();
+            System.out.println("Instance2"); 
+        });
+
+        t1.start();
+        t2.start();
+    }
+} 
+
+Q.2 Write a python program to implement simple Linear Regression for predicting 
+house price.
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn import linear_model 
+
+#df=pd.read_excel("./position.xlsx")
+df = pd.read_excel("./position.xlsx", names=["Level", "Salary"])
+
+print("first five details\n")
+print(df.head())
+plt.xlabel("Level")
+plt.ylabel("Salary")
+
+lr=linear_model.LinearRegression()
+lr.fit(df[["Level"]],df.Salary)
+print("Prediction at 15:")
+print(lr.predict([[15]]))
+
+print("coeficent " )
+print(lr.coef_)
+print("\nintercept")
+print(lr.intercept_)
+
+plt.scatter(df.Level, df.Salary,color="red")
+plt.plot(df.Level, lr.predict(df[["Level"]]),color="red")
+plt.show()
+
+Q.3 Print below array elements using map:
+a. let fruits1 = ["apple", "banana"];
+b. let fruits2 = ["cherry", "orange"];
+c. Merge both fruits array and print it 
+
+FruitList.jsx
+import React from 'react';
+
+const FruitsList = () => {
+  let fruits1 = ["apple", "banana"];
+  let fruits2 = ["cherry", "orange"];
+
+  // Merge both arrays
+  let allFruits = [...fruits1, ...fruits2];
+
+  return (
+    <div>
+      <h1>Slip 9</h1>
+      <h2>Merged Fruits List</h2>
+      <ul>
+        {allFruits.map((fruit, index) => (
+          <li key={index}>{fruit}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default FruitsList;

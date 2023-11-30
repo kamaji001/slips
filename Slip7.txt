@@ -1,0 +1,364 @@
+Q.1 Write a Java Program to implement State Pattern for Gumball Machine. Create 
+instance variable that holds current state from there, we just need to handle all 
+actions, behaviors and state transition that can happen.
+
+interface State {
+ void insertQuarter();
+ void ejectQuarter();
+ void turnCrank();
+ void dispense();
+}
+
+//Concrete State: NoQuarterState
+class NoQuarterState implements State {
+ private GumballMachine gumballMachine;
+ 
+ public NoQuarterState(GumballMachine gumballMachine) {
+     this.gumballMachine = gumballMachine;
+ }
+ 
+ public void insertQuarter() {
+     System.out.println("You inserted a quarter.");
+     gumballMachine.setState(gumballMachine.getHasQuarterState());
+ }
+ 
+ public void ejectQuarter() {
+     System.out.println("You haven't inserted a quarter.");
+ }
+ 
+ public void turnCrank() {
+     System.out.println("You turned, but there's no quarter.");
+ }
+ 
+ public void dispense() {
+     System.out.println("You need to pay first.");
+ }
+ 
+ public String toString() {
+     return "Waiting for quarter";
+ }
+}
+
+//Concrete State: HasQuarterState
+class HasQuarterState implements State {
+ private GumballMachine gumballMachine;
+ 
+ public HasQuarterState(GumballMachine gumballMachine) {
+     this.gumballMachine = gumballMachine;
+ }
+ 
+ public void insertQuarter() {
+     System.out.println("You can't insert another quarter.");
+ }
+ 
+ public void ejectQuarter() {
+     System.out.println("Quarter returned.");
+     gumballMachine.setState(gumballMachine.getNoQuarterState());
+ }
+ 
+ public void turnCrank() {
+     System.out.println("You turned...");
+     gumballMachine.setState(gumballMachine.getSoldState());
+ }
+ 
+ public void dispense() {
+     System.out.println("No gumball dispensed.");
+ }
+ 
+ public String toString() {
+     return "Waiting for turn of crank";
+ }
+}
+
+//Concrete State: SoldState
+class SoldState implements State {
+ private GumballMachine gumballMachine;
+ 
+ public SoldState(GumballMachine gumballMachine) {
+     this.gumballMachine = gumballMachine;
+ }
+ 
+ public void insertQuarter() {
+     System.out.println("Please wait, we're already giving you a gumball.");
+ }
+ 
+ public void ejectQuarter() {
+     System.out.println("Sorry, you already turned the crank.");
+ }
+ 
+ public void turnCrank() {
+     System.out.println("Turning twice doesn't get you another gumball!");
+ }
+ 
+ public void dispense() {
+     gumballMachine.releaseGumball();
+     if (gumballMachine.getCount() > 0) {
+         gumballMachine.setState(gumballMachine.getNoQuarterState());
+     } else {
+         System.out.println("Oops, out of gumballs!");
+         gumballMachine.setState(gumballMachine.getSoldOutState());
+     }
+ }
+ 
+ public String toString() {
+     return "Dispensing a gumball";
+ }
+}
+
+//Concrete State: SoldOutState
+class SoldOutState implements State {
+ private GumballMachine gumballMachine;
+ 
+ public SoldOutState(GumballMachine gumballMachine) {
+     this.gumballMachine = gumballMachine;
+ }
+ 
+ public void insertQuarter() {
+     System.out.println("Sorry, gumballs are sold out.");
+ }
+ 
+ public void ejectQuarter() {
+     System.out.println("You can't eject, you haven't inserted a quarter yet.");
+ }
+ 
+ public void turnCrank() {
+     System.out.println("You turned, but there are no gumballs.");
+ }
+ 
+ public void dispense() {
+     System.out.println("No gumball dispensed.");
+ }
+ 
+ public String toString() {
+     return "Sold out";
+ }
+}
+
+//Gumball Machine class
+class GumballMachine {
+ private State soldOutState;
+ private State noQuarterState;
+ private State hasQuarterState;
+ private State soldState;
+ 
+ private State state;
+ private int count = 0;
+ 
+ public GumballMachine(int numberOfGumballs) {
+     soldOutState = new SoldOutState(this);
+     noQuarterState = new NoQuarterState(this);
+     hasQuarterState = new HasQuarterState(this);
+     soldState = new SoldState(this);
+     
+     this.count = numberOfGumballs;
+     if (numberOfGumballs > 0) {
+         state = noQuarterState;
+     } else {
+         state = soldOutState;
+     }
+ }
+ 
+ public void insertQuarter() {
+     state.insertQuarter();
+ }
+ 
+ public void ejectQuarter() {
+     state.ejectQuarter();
+ }
+ 
+ public void turnCrank() {
+     state.turnCrank();
+     state.dispense();
+ }
+ 
+ void setState(State state) {
+     this.state = state;
+ }
+ 
+ void releaseGumball() {
+     System.out.println("A gumball comes rolling out the slot...");
+     if (count != 0) {
+         count--;
+     }
+ }
+ 
+ int getCount() {
+     return count;
+ }
+ 
+ State getSoldOutState() {
+     return soldOutState;
+ }
+ 
+ State getNoQuarterState() {
+     return noQuarterState;
+ }
+ 
+ State getHasQuarterState() {
+     return hasQuarterState;
+ }
+ 
+ State getSoldState() {
+     return soldState;
+ }
+ 
+ public String toString() {
+     StringBuilder result = new StringBuilder();
+     result.append("\nMighty Gumball, Inc.");
+     result.append("\nJava-enabled Standing Gumball Model #2023");
+     result.append("\nInventory: " + count + " gumball");
+     if (count != 1) {
+         result.append("s");
+     }
+     result.append("\n");
+     result.append("Machine is " + state + "\n");
+     return result.toString();
+ }
+}
+
+//Main class
+public class GumballMachineTestDrive {
+ public static void main(String[] args) {
+     GumballMachine gumballMachine = new GumballMachine(5);
+     
+     System.out.println(gumballMachine);
+     
+     gumballMachine.insertQuarter();
+     gumballMachine.turnCrank();
+     
+     System.out.println(gumballMachine);
+     
+     gumballMachine.insertQuarter();
+     gumballMachine.ejectQuarter();
+     gumballMachine.turnCrank();
+     
+     System.out.println(gumballMachine);
+     
+     gumballMachine.insertQuarter();
+     gumballMachine.turnCrank();
+     gumballMachine.insertQuarter();
+     gumballMachine.turnCrank();
+     
+     System.out.println(gumballMachine);
+     
+     gumballMachine.insertQuarter();
+     gumballMachine.turnCrank();
+     
+     System.out.println(gumballMachine);
+ }
+}
+
+Q.2 Write a python program to implement Decision Tree Model for classification. 
+Use Decision_Tree_Dataset.csv 
+
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Load the dataset
+data = {
+    'company': [
+        'google', 'google', 'google', 'google', 'google', 'google',
+        'abc pharma', 'abc pharma', 'abc pharma', 'abc pharma',
+        'facebook', 'facebook', 'facebook', 'facebook', 'facebook', 'facebook'
+    ],
+    'job': [
+        'sales executive', 'sales executive', 'business manager', 'business manager', 'computer programmer', 'computer programmer',
+        'sales executive', 'computer programmer', 'business manager', 'business manager',
+        'sales executive', 'sales executive', 'business manager', 'business manager', 'computer programmer', 'computer programmer'
+    ],
+    'degree': [
+        'bachelors', 'masters', 'bachelors', 'masters', 'bachelors', 'masters',
+        'masters', 'bachelors', 'bachelors', 'masters',
+        'bachelors', 'masters', 'bachelors', 'masters', 'bachelors', 'masters'
+    ],
+    'salary_more_then_100k': [0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+}
+
+df = pd.DataFrame(data)
+
+# Encode categorical variables using Label Encoding
+label_encoder = LabelEncoder()
+df['company'] = label_encoder.fit_transform(df['company'])
+df['job'] = label_encoder.fit_transform(df['job'])
+df['degree'] = label_encoder.fit_transform(df['degree'])
+# Separate the features (X) and the target variable (y)
+X = df.drop('salary_more_then_100k', axis=1)
+y = df['salary_more_then_100k']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Decision Tree classification model
+decision_tree = DecisionTreeClassifier()
+
+# Fit the model to the training data
+decision_tree.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = decision_tree.predict(X_test)
+
+# Evaluate the model's performance
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+# Print the evaluation results
+print("Accuracy:", accuracy)
+print("Confusion Matrix:\n", conf_matrix)
+print("Classification Report:\n", report)
+
+
+Q.3 Create two components - ParentComponent, ChildComponent
+a. ParentComponent passes prop as name to ChildComponent
+b. ChildComponent displays name e.g. “ Hi <name>” 
+ChiledCompound.js
+// ChildComponent.jsx
+import React from 'react';
+
+const ChildComponent = (props) => {
+  return (
+    <div>
+      {/* <h2>Child Component</h2> */}
+      <p>Hi {props.name}</p>
+    </div>
+  );
+};
+
+export default ChildComponent;
+ParrentCompound.js
+// ParentComponent.jsx
+import React from 'react';
+import ChildComponent from './ChildComponent/ChildComponent';
+
+const ParentComponent = () => {
+  const name = 'Ibram'; // You can change this value
+
+  return (
+    <div>
+      {/* <h1>Parent Component</h1> */}
+      <ChildComponent name={name} />
+    </div>
+  );
+};
+
+export default ParentComponent;
+
+App.js
+// src/slip4/App.js
+import React from 'react';
+import ParentComponent from './ParentComponent/ParentComponent';
+
+
+const App = () => {
+  return (
+    <div>
+      <h1>Slip 4</h1>
+      <ParentComponent />
+    </div>
+  );
+};
+
+export default App;

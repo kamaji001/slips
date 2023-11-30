@@ -1,0 +1,236 @@
+Q.1 Write a Java Program to implement command pattern to test Remote Control 
+ 
+//package remoteControl;
+
+import java.util.Scanner;
+
+//Command interface
+interface Command {
+ void execute();
+}
+
+//Concrete command: Turn on the TV
+class TvOnCommand implements Command {
+ private Tv tv;
+
+ public TvOnCommand(Tv tv) {
+     this.tv = tv;
+ }
+
+ @Override
+ public void execute() {
+     tv.turnOn();
+ }
+}
+
+//Concrete command: Turn off the TV
+class TvOffCommand implements Command {
+ private Tv tv;
+
+ public TvOffCommand(Tv tv) {
+     this.tv = tv;
+ }
+
+ @Override
+ public void execute() {
+     tv.turnOff();
+ }
+}
+
+
+
+//Receiver: The TV
+class Tv {
+
+ private boolean isOn = false;
+
+ public void turnOn() {
+     isOn = true;
+     System.out.println("TV is ON");
+ }
+
+ public void turnOff() {
+     isOn = false;
+     System.out.println("TV is OFF");
+ }
+
+
+}
+
+//Invoker: Controls the commands
+class RemoteControl {
+ private Command command;
+
+ public void setCommand(Command command) {
+     this.command = command;
+ }
+
+ public void pressButton() {
+     command.execute();
+ }
+}
+
+public class TvRemoteControlDemo {
+ public static void main(String[] args) {
+     // Create the TV and commands
+     Tv livingRoomTv = new Tv();
+     TvOnCommand tvOn = new TvOnCommand(livingRoomTv);
+     TvOffCommand tvOff = new TvOffCommand(livingRoomTv);
+
+     // Create the remote control
+     RemoteControl remote = new RemoteControl();
+
+     // Menu-driven program
+     Scanner scanner = new Scanner(System.in);
+     int choice = 0; // Initialize choice with a default value
+
+     do {
+         System.out.println("\nTV Remote Control Menu:");
+         System.out.println("1. Turn On TV");
+         System.out.println("2. Turn Off TV");
+
+         System.out.println("3. Exit");
+         System.out.print("Enter your choice: ");
+
+         if (scanner.hasNextInt()) {
+             choice = scanner.nextInt();
+             switch (choice) {
+                 case 1:
+                     remote.setCommand(tvOn);
+                     remote.pressButton();
+                     break;
+                 case 2:
+                     remote.setCommand(tvOff);
+                     remote.pressButton();
+                     break;
+
+                 case 3:
+                     System.out.println("Exiting the TV remote control.");
+                     break;
+                 default:
+                     System.out.println("Invalid choice. Please try again.");
+             }
+         } else {
+             System.out.println("Invalid input. Please enter a number.");
+             scanner.next(); // Consume invalid input
+         }
+     } while (choice != 3);
+
+     scanner.close();
+ }
+}
+
+Q.2 Write a python program to implement logistic Regression for handwritten digit 
+dataset. 
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn import linear_model, metrics
+
+df=pd.read_csv("insurance_data.csv")
+print(df)
+print(" ")
+X = df[['age']]
+print(X)
+y = df['bought_insurance']
+print(y)
+
+#Plotting graph
+plt.scatter(df.age,df.bought_insurance,color='red',marker='+')
+print(plt.show())
+
+# splitting X and y into training and testing sets
+X_train, X_test,y_train, y_test = train_test_split(X, y,test_size=0.1)
+print("Train X")
+print(X_train)
+print("Test X")
+print(X_test) 
+print("Train Y")
+print(y_train) 
+print("Test Y")
+print(y_test) 
+
+# create logistic regression object
+reg = linear_model.LogisticRegression()
+print(reg) 
+
+# train the model using the training sets
+reg.fit(X_train, y_train)
+ 
+# making predictions on the testing set
+y_pred = reg.predict(X_test)
+ 
+# comparing actual response values (y_test)
+# with predicted response values (y_pred)
+print("Logistic Regression model accuracy(in %):",metrics.accuracy_score(y_test, y_pred)*100)
+
+
+Q.3 Create a basic to do list application: (use useState() ) 
+a. Build a component for adding, displaying, and deleting tasks.
+b. Use state to manage the list of tasks.
+c. Add a form for users to input new tasks.
+d. Display the list of tasks and provide a button to remove them.
+e. Add a counter for the total number of tasks.
+
+// TodoList.js
+import React, { useState } from 'react';
+
+const TodoList = () => {
+  // State for managing tasks
+  const [tasks, setTasks] = useState([]);
+  // State for managing the input value in the form
+  const [taskInput, setTaskInput] = useState('');
+
+  // Function to handle task addition
+  const addTask = () => {
+    if (taskInput.trim() !== '') {
+      setTasks([...tasks, taskInput]);
+      setTaskInput('');
+    }
+  };
+
+  // Function to handle task removal
+  const removeTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div>
+      <h1>Slip 3</h1>
+      <h2>Todo List</h2>
+
+      {/* Task input form */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter a new task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      {/* Display tasks */}
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>
+            {task}
+            <button onClick={() => removeTask(index)}>
+              <span role="img" aria-label="Delete">
+                🗑️
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Display total number of tasks */}
+      <p>Total Tasks: {tasks.length}</p>
+    </div>
+  );
+};
+export default TodoList;

@@ -1,0 +1,234 @@
+Q.1 Write a Java program to implement Adapter pattern to design Heart Model to 
+Beat Model.
+
+//package heartToBeat;
+
+//Heart Model interface
+interface HeartModel {
+ int getHeartRate();
+}
+
+//Heart Model Implementation
+class Heart implements HeartModel {
+ private int heartRate;
+
+ public Heart() {
+     // Simulate heart rate data (e.g., from a sensor)
+     this.heartRate = 0;
+ }
+
+ public int getHeartRate() {
+     return heartRate;
+ }
+
+ // Simulate changing heart rate data
+ public void generateHeartRate() {
+     heartRate = (int) (Math.random() * 100 + 60); // Generate a random heart rate between 60 and 160
+     System.out.println("Heart rate: " + heartRate + " bpm");
+ }
+}
+
+//Beat Model interface
+interface BeatModel {
+ void setBPM(int bpm);
+ int getBPM();
+}
+
+//Beat Model Implementation
+class Beat implements BeatModel {
+ private int bpm;
+
+ public void setBPM(int bpm) {
+     this.bpm = bpm;
+     System.out.println("BPM set to " + bpm);
+ }
+
+ public int getBPM() {
+     return bpm;
+ }
+}
+
+//Adapter to adapt Heart Model to Beat Model
+class HeartAdapter implements BeatModel {
+ private HeartModel heartModel;
+
+ public HeartAdapter(HeartModel heartModel) {
+     this.heartModel = heartModel;
+ }
+
+ public void setBPM(int bpm) {
+     // Heart rate doesn't have a set BPM, so we'll ignore this method
+     System.out.println("Cannot set BPM on Heart Model");
+ }
+
+ public int getBPM() {
+     int heartRate = heartModel.getHeartRate();
+     return heartRate;
+ }
+}
+
+//Main class
+public class AdapterPatternDemo {
+ public static void main(String[] args) {
+     Heart heart = new Heart();
+     Beat beat = new Beat();
+     HeartAdapter adapter = new HeartAdapter(heart);
+
+     // Use the Heart Model as if it were a Beat Model
+     int bpm = adapter.getBPM();
+     System.out.println("Initial BPM: " + bpm);
+
+     // Simulate changing heart rate data and updating the BPM
+     heart.generateHeartRate();
+     bpm = adapter.getBPM();
+     beat.setBPM(bpm);
+ }
+}
+
+Q.2 Write a python program to implement linear SVM for Regression. Use 
+position_sal.csv. 
+
+import pandas as pd
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+iris.feature_names
+
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df.head()
+
+df['target'] = iris.target
+df.head()
+
+df[df.target==1].head()
+
+df[df.target==2].head()
+
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+df[45:55]
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+import matplotlib.pyplot as plt
+
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='.')
+plt.show()
+plt.xlabel('Petal Length')
+plt.ylabel('Petal Width')
+plt.scatter(df0['petal length (cm)'], df0['petal width (cm)'],color="green",marker='+')
+plt.scatter(df1['petal length (cm)'], df1['petal width (cm)'],color="blue",marker='.')
+plt.show()
+from sklearn.model_selection import train_test_split
+
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+print(X)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+len(X_train)
+
+len(X_test)
+
+from sklearn.svm import SVC
+model = SVC()
+
+model.fit(X_train, y_train)
+
+model.score(X_test, y_test)
+
+model.predict([[4.8,3.0,1.5,0.3]])
+
+model_C = SVC(C=1)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_C = SVC(C=20)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_g = SVC(gamma=10)
+model_g.fit(X_train, y_train)
+print(model_g.score(X_test, y_test))
+
+model_linear_kernal = SVC(kernel='rbf')  
+model_linear_kernal.fit(X_train, y_train)
+print(model_linear_kernal.score(X_test, y_test))
+
+
+Q.3 Create a basic to do list application (use useState()): 
+a. Build a component for adding, displaying, and deleting tasks.
+b. Use state to manage the list of tasks.
+c. Add a form for users to input new tasks.
+d. Display the list of tasks and provide a button to remove them.
+e. Add a counter for the total number of tasks.
+
+// TodoList.js
+import React, { useState } from 'react';
+
+const TodoList = () => {
+  // State for managing tasks
+  const [tasks, setTasks] = useState([]);
+  // State for managing the input value in the form
+  const [taskInput, setTaskInput] = useState('');
+
+  // Function to handle task addition
+  const addTask = () => {
+    if (taskInput.trim() !== '') {
+      setTasks([...tasks, taskInput]);
+      setTaskInput('');
+    }
+  };
+
+  // Function to handle task removal
+  const removeTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div>
+      <h1>Slip 3</h1>
+      <h2>Todo List</h2>
+
+      {/* Task input form */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter a new task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      {/* Display tasks */}
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>
+            {task}
+            <button onClick={() => removeTask(index)}>
+              <span role="img" aria-label="Delete">
+                🗑️
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Display total number of tasks */}
+      <p>Total Tasks: {tasks.length}</p>
+    </div>
+  );
+};
+export default TodoList;

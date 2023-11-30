@@ -1,0 +1,78 @@
+Q.1 Write a Java Program to implement undo command to test Ceiling fan.
+
+<to be continue>
+
+Q.2 Write a python program to implement logistic Regression for predicting whether 
+a person will buy the insurance or not. Use insurance_data.csv.
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn import linear_model, metrics
+
+df=pd.read_csv("insurance_data.csv")
+print(df)
+print(" ")
+X = df[['age']]
+print(X)
+y = df['bought_insurance']
+print(y)
+
+#Plotting graph
+plt.scatter(df.age,df.bought_insurance,color='red',marker='+')
+print(plt.show())
+
+# splitting X and y into training and testing sets
+X_train, X_test,y_train, y_test = train_test_split(X, y,test_size=0.1)
+print("Train X")
+print(X_train)
+print("Test X")
+print(X_test) 
+print("Train Y")
+print(y_train) 
+print("Test Y")
+print(y_test) 
+
+# create logistic regression object
+reg = linear_model.LogisticRegression()
+print(reg) 
+
+# train the model using the training sets
+reg.fit(X_train, y_train)
+ 
+# making predictions on the testing set
+y_pred = reg.predict(X_test)
+ 
+# comparing actual response values (y_test)
+# with predicted response values (y_pred)
+print("Logistic Regression model accuracy(in %):",metrics.accuracy_score(y_test, y_pred)*100)
+
+Q.3 Print below array elements using map:
+a. let fruits1 = ["apple", "banana"];
+b. let fruits2 = ["cherry", "orange"];
+c. Merge both fruits array and print it
+
+FruitList.jsx
+import React from 'react';
+
+const FruitsList = () => {
+  let fruits1 = ["apple", "banana"];
+  let fruits2 = ["cherry", "orange"];
+
+  // Merge both arrays
+  let allFruits = [...fruits1, ...fruits2];
+
+  return (
+    <div>
+      <h1>Slip 9</h1>
+      <h2>Merged Fruits List</h2>
+      <ul>
+        {allFruits.map((fruit, index) => (
+          <li key={index}>{fruit}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+export default FruitsList;

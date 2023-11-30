@@ -1,0 +1,148 @@
+Q.1 Write a Java Program to implement I/O Decorator for converting uppercase 
+letters to lower case letters. [20]
+import java.util.Scanner;
+
+interface words
+{
+     String getword();
+    
+}
+class basic_words implements words
+{
+    public String getword()
+    {
+        Scanner sc =new Scanner(System.in);
+        System.out.println("Enter worrd in uppercase");
+        String str=sc.nextLine();
+        return str;
+    }
+}
+
+ class Lower implements words
+{
+     public words w;
+     public Lower(words w)
+     {
+         this.w=w;
+     }
+     
+    // w.getword();
+    public String getword() {
+        
+        //w.getword();
+        return convertlower(w);
+    }
+    public String convertlower( words w)
+    {
+        //System.out.println("converted to Lower:"+w.getword().toLowerCase());
+        return w.getword().toLowerCase();
+    }
+}
+
+public class ass2 {
+
+    public static void main(String[] args) {
+
+        words c=new basic_words();
+    //  Shape r=new Rectangle();
+        
+        words rc=new Lower(c);
+        
+
+        System.out.println("Lower:"+rc.getword());
+//      
+//      
+    }
+
+}
+
+Q.2 Write a python program to implement Agglomerative clustering on a income.csv 
+dataset.
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import AgglomerativeClustering
+
+# Create a synthetic dataset with three clusters
+n_samples = 300
+n_features = 2
+n_clusters = 3
+
+X, _ = make_blobs(n_samples=n_samples, n_features=n_features, centers=n_clusters, random_state=42)
+
+# Apply Agglomerative Clustering
+agg_clustering = AgglomerativeClustering(n_clusters=n_clusters)
+agg_labels = agg_clustering.fit_predict(X)
+
+# Visualize the data and Agglomerative Clustering results
+plt.scatter(X[:, 0], X[:, 1], c=agg_labels, cmap='viridis')
+plt.title('Agglomerative Clustering')
+plt.show()
+
+Q.3 Create a basic to do list application (use useReducer()) : 
+a. Build a component for adding, displaying, and deleting tasks.
+b. Use state to manage the list of tasks.
+c. Add a form for users to input new tasks.
+d. Display the list of tasks and provide a button to remove them.
+e. Add a counter for the total number of tasks.
+// TodoList.js
+import React, { useState } from 'react';
+
+const TodoList = () => {
+  // State for managing tasks
+  const [tasks, setTasks] = useState([]);
+  // State for managing the input value in the form
+  const [taskInput, setTaskInput] = useState('');
+
+  // Function to handle task addition
+  const addTask = () => {
+    if (taskInput.trim() !== '') {
+      setTasks([...tasks, taskInput]);
+      setTaskInput('');
+    }
+  };
+
+  // Function to handle task removal
+  const removeTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div>
+      <h1>Slip 3</h1>
+      <h2>Todo List</h2>
+
+      {/* Task input form */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter a new task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      {/* Display tasks */}
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>
+            {task}
+            <button onClick={() => removeTask(index)}>
+              <span role="img" aria-label="Delete">
+                🗑️
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Display total number of tasks */}
+      <p>Total Tasks: {tasks.length}</p>
+    </div>
+  );
+};
+export default TodoList;

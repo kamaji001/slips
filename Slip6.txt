@@ -1,0 +1,114 @@
+Q.1 Write a Java Program to implement undo command to test Ceiling fan. [20] 
+< to be continues…..>
+
+Q.2 Write a python program to implement Polynomial Regression for positionsal.csv 
+dataset. 
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+
+df=pd.read_excel("./position.xlsx")
+print(df)
+X = df.iloc[:, 1:2].values
+y = df.iloc[:, 2].values
+print(X)
+print(y)
+
+lin = LinearRegression() 
+print(lin.fit(X, y))
+
+poly = PolynomialFeatures(degree=4)
+X_poly = poly.fit_transform(X)
+ 
+poly.fit(X_poly, y)
+lin2 = LinearRegression()
+print(lin2.fit(X_poly, y))
+
+plt.scatter(X, y, color='blue')
+ 
+plt.plot(X, lin.predict(X), color='red')
+plt.title('Linear Regression')
+plt.xlabel('level')
+plt.ylabel('salary')
+
+plt.show()
+
+plt.scatter(X, y, color='blue')
+ 
+plt.plot(X, lin2.predict(poly.fit_transform(X)),
+         color='red')
+plt.title('Polynomial Regression')
+plt.xlabel('Level')
+plt.ylabel('salary')
+ 
+plt.show()
+
+Q.3 Create a basic to do list application: (use useState() ) 
+a. Build a component for adding, displaying, and deleting tasks.
+b. Use state to manage the list of tasks.
+c. Add a form for users to input new tasks.
+d. Display the list of tasks and provide a button to remove them.
+e. Add a counter for the total number of tasks
+// TodoList.js
+import React, { useState } from 'react';
+
+const TodoList = () => {
+  // State for managing tasks
+  const [tasks, setTasks] = useState([]);
+  // State for managing the input value in the form
+  const [taskInput, setTaskInput] = useState('');
+
+  // Function to handle task addition
+  const addTask = () => {
+    if (taskInput.trim() !== '') {
+      setTasks([...tasks, taskInput]);
+      setTaskInput('');
+    }
+  };
+
+  // Function to handle task removal
+  const removeTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div>
+      <h1>Slip 3</h1>
+      <h2>Todo List</h2>
+
+      {/* Task input form */}
+      <div>
+        <input
+          type="text"
+          placeholder="Enter a new task"
+          value={taskInput}
+          onChange={(e) => setTaskInput(e.target.value)}
+        />
+        <button onClick={addTask}>Add Task</button>
+      </div>
+
+      {/* Display tasks */}
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index}>
+            {task}
+            <button onClick={() => removeTask(index)}>
+              <span role="img" aria-label="Delete">
+                🗑️
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Display total number of tasks */}
+      <p>Total Tasks: {tasks.length}</p>
+    </div>
+  );
+};
+export default TodoList;

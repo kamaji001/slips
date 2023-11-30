@@ -1,0 +1,164 @@
+Q.1 Write a Java Program to implement I/O Decorator for converting uppercase letters to 
+lower case letters.
+
+import java.util.Scanner;
+
+interface words
+{
+     String getword();
+    
+}
+class basic_words implements words
+{
+    public String getword()
+    {
+        Scanner sc =new Scanner(System.in);
+        System.out.println("Enter worrd in uppercase");
+        String str=sc.nextLine();
+        return str;
+    }
+}
+
+ class Lower implements words
+{
+     public words w;
+     public Lower(words w)
+     {
+         this.w=w;
+     }
+     
+    // w.getword();
+    public String getword() {
+        
+        //w.getword();
+        return convertlower(w);
+    }
+    public String convertlower( words w)
+    {
+        //System.out.println("converted to Lower:"+w.getword().toLowerCase());
+        return w.getword().toLowerCase();
+    }
+}
+
+public class ass2 {
+
+    public static void main(String[] args) {
+
+        words c=new basic_words();
+    //  Shape r=new Rectangle();
+        
+        words rc=new Lower(c);
+        
+
+        System.out.println("Lower:"+rc.getword());
+//      
+//      
+    }
+
+}
+
+Q.2 Write a python program to transform data with Principal Component Analysis (PCA). 
+Use handwritten digit dataset.
+
+from sklearn.datasets import load_digits
+import pandas as pd
+
+dataset = load_digits()
+dataset.keys()//package enumIterator;
+
+
+
+dataset.data[0].reshape(8,8)
+
+df = pd.DataFrame(dataset.data, columns=dataset.feature_names)
+df.head()
+
+dataset.target
+
+X = df
+
+y = dataset.target
+
+from sklearn.preprocessing import StandardScaler
+
+s caler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+X_scaled
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=30)
+
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+model.fit(X_train, y_train)
+model.score(X_test, y_test)
+
+from sklearn.decomposition import PCA
+
+pca = PCA(0.95)
+X_pca = pca.fit_transform(X)
+X_pca.shape
+
+print(pca.explained_variance_ratio_)
+
+print(pca.n_components_)
+
+print(X_pca)
+
+X_train_pca, X_test_pca, y_train, y_test =  train_test_split(X_pca, y, test_size=0.2, random_state=30)
+
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train_pca, y_train)
+print(model.score(X_test_pca, y_test))
+
+
+
+Q.3 Create a simple React component called Counter that displays a number and has two
+buttons: "Increment" and "Decrement." The number should start at 0 and change 
+when the buttons are clicked.
+a. Use state to manage the number.
+b. Pass the initial number as a prop to the Counter component.
+ [20]
+import React from 'react';
+import Counter from './Counter.js'; // Make sure to adjust the path based on your file structure
+
+const App = () => {
+  return (
+    <div>
+      <h1>Slip 1</h1>
+      <Counter initialNumber={0} />
+    </div>
+  );
+};
+                    
+export default App;
+
+
+Counter.js
+import React, { useState } from 'react';
+
+const Counter = ({ initialNumber }) => {
+  const [count, setCount] = useState(initialNumber || 0);
+
+  const handleIncrement = () => {
+    setCount(count + 1);
+  };
+
+  const handleDecrement = () => {
+    setCount(count - 1);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+    </div>
+  );
+};
+ 
+export default Counter;

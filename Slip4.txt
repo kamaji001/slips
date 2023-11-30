@@ -1,0 +1,234 @@
+Q.1 Write a Java Program to implement Adapter pattern for Enumeration iterator.
+ 
+//package enumIterator;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+
+// Adapter class to adapt Enumeration to Iterator
+class EnumerationAdapter<T> implements Iterator<T> {
+    private Enumeration<T> enumeration;
+
+    public EnumerationAdapter(Enumeration<T> enumeration) {
+        this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return //package enumIterator;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+
+// Adapter class to adapt Enumeration to Iterator
+class EnumerationAdapter<T> implements Iterator<T> {
+    private Enumeration<T> enumeration;
+
+    public EnumerationAdapter(Enumeration<T> enumeration) {
+        this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return enumeration.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return enumeration.nextElement();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Remove operation is not supported.");
+    }
+}
+
+public class EnumDemo {
+    public static void main(String[] args) {
+        // Create an Enumeration (e.g., from a Vector)
+        java.util.Vector<String> vector = new java.util.Vector<>();
+        vector.add("Item 1");
+        vector.add("Item 2");
+        vector.add("Item 3");
+        Enumeration<String> enumeration = vector.elements();
+
+        // Use the Enumeration as an Iterator using the Adapter
+        Iterator<String> iterator = new EnumerationAdapter<>(enumeration);
+
+        // Iterate and print elements using Iterator
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            System.out.println(item);
+        }
+    }
+}
+enumeration.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return enumeration.nextElement();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Remove operation is not supported.");
+    }
+}
+
+public class EnumDemo {
+    public static void main(String[] args) {
+        // Create an Enumeration (e.g., from a Vector)
+        java.util.Vector<String> vector = new java.util.Vector<>();
+        vector.add("Item 1");
+        vector.add("Item 2");
+        vector.add("Item 3");
+        Enumeration<String> enumeration = vector.elements();
+
+        // Use the Enumeration as an Iterator using the Adapter
+        Iterator<String> iterator = new EnumerationAdapter<>(enumeration);
+
+        // Iterate and print elements using Iterator
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            System.out.println(item);
+        }
+    }
+}
+
+
+Q.2 Write a python program to implement logistic Regression for predicting
+ whether a person will buy the insurance or not. Use insurance_data.csv. 
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn import linear_model, metrics
+
+df=pd.read_csv("insurance_data.csv")
+print(df)
+print(" ")
+X = df[['age']]
+print(X)
+y = df['bought_insurance']
+print(y)
+
+#Plotting graph
+plt.scatter(df.age,df.bought_insurance,color='red',marker='+')
+print(plt.show())
+
+# splitting X and y into training and testing sets
+X_train, X_test,y_train, y_test = train_test_split(X, y,test_size=0.1)
+print("Train X")
+print(X_train)
+print("Test X")
+print(X_test) 
+print("Train Y")
+print(y_train) 
+print("Test Y")
+print(y_test) 
+
+# create logistic regression object
+reg = linear_model.LogisticRegression()
+print(reg) 
+
+# train the model using the training sets
+reg.fit(X_train, y_train)
+ 
+# making predictions on the testing set
+y_pred = reg.predict(X_test)
+ 
+# comparing actual response values (y_test)
+# with predicted response values (y_pred)
+print("Logistic Regression model accuracy(in %):",metrics.accuracy_score(y_test, y_pred)*100)
+
+ 
+Q.3 Build a multi-page React application that includes two pages: "Home" and 
+"About."
+a. Create a navigation bar with links to the "Home" and "About" pages.
+b. Implement routing using a library like React Router.
+c. Each page should have a unique URL and content (any).
+About.js
+// components/About.js
+import React from 'react';
+
+const About = () => {
+  return (
+    <div>
+      <h2>About Page</h2>
+      <p>This is the About Page with some information about the application.</p>
+    </div>
+  );
+};
+
+export default About;
+
+
+home.js
+// components/Home.js
+import React from 'react';
+
+const Home = () => {
+  return (
+    <div>
+      <h2>Home Page</h2>
+      <p>Welcome to the Home Page!</p>
+    </div>
+  );
+};
+
+export default Home;
+
+
+app.js
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+
+const App = () => {
+  return (
+    <Router>
+      <div>
+      <h1>Slip 2</h1>
+        <nav> //package enumIterator;
+
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>	
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <hr />
+
+        <Routes>
+          <Route path="/about" element={<About />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+
+
+index.js
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

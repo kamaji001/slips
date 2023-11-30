@@ -1,0 +1,270 @@
+Q.1 Write a Java Program to implement Adapter pattern for Enumeration iterator.
+ 
+//package enumIterator;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+
+// Adapter class to adapt Enumeration to Iterator
+class EnumerationAdapter<T> implements Iterator<T> {
+    private Enumeration<T> enumeration;
+
+    public EnumerationAdapter(Enumeration<T> enumeration) {
+        this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return //package enumIterator;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+
+// Adapter class to adapt Enumeration to Iterator
+class EnumerationAdapter<T> implements Iterator<T> {
+    private Enumeration<T> enumeration;
+
+    public EnumerationAdapter(Enumeration<T> enumeration) {
+        this.enumeration = enumeration;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return enumeration.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return enumeration.nextElement();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Remove operation is not supported.");
+    }
+}
+
+public class EnumDemo {
+    public static void main(String[] args) {
+        // Create an Enumeration (e.g., from a Vector)
+        java.util.Vector<String> vector = new java.util.Vector<>();
+        vector.add("Item 1");
+        vector.add("Item 2");
+        vector.add("Item 3");
+        Enumeration<String> enumeration = vector.elements();
+
+        // Use the Enumeration as an Iterator using the Adapter
+        Iterator<String> iterator = new EnumerationAdapter<>(enumeration);
+
+        // Iterate and print elements using Iterator
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            System.out.println(item);
+        }
+    }
+}
+enumeration.hasMoreElements();
+    }
+
+    @Override
+    public T next() {
+        return enumeration.nextElement();
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("Remove operation is not supported.");
+    }
+}
+
+public class EnumDemo {
+    public static void main(String[] args) {
+        // Create an Enumeration (e.g., from a Vector)
+        java.util.Vector<String> vector = new java.util.Vector<>();
+        vector.add("Item 1");
+        vector.add("Item 2");
+        vector.add("Item 3");
+        Enumeration<String> enumeration = vector.elements();
+
+        // Use the Enumeration as an Iterator using the Adapter
+        Iterator<String> iterator = new EnumerationAdapter<>(enumeration);
+
+        // Iterate and print elements using Iterator
+        while (iterator.hasNext()) {
+            String item = iterator.next();
+            System.out.println(item);
+        }
+    }
+}
+
+Q.2 Write a python program to implement k-nearest Neighbors algorithm to build a
+prediction model. Use Iris Dataset. 
+
+import pandas as pd
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+iris.feature_names
+
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df.head()
+
+df['target'] = iris.target
+df.head()
+
+df[df.target==1].head()
+
+df[df.target==2].head()
+
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+df[45:55]
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+import matplotlib.pyplot as plt
+
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='.')
+
+plt.xlabel('Petal Length')
+plt.ylabel('Petal Width')
+plt.scatter(df0['petal length (cm)'], df0['petal width (cm)'],color="green",marker='+')
+plt.scatter(df1['petal length (cm)'], df1['petal width (cm)'],color="blue",marker='.')
+
+from sklearn.model_selection import train_test_split
+
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
+
+len(X_train)
+
+len(X_test)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=10)
+knn.fit(X_train,y_train)
+
+print(knn.score(X_test, y_test))
+
+print(knn.predict([[4.8,3.0,1.5,0.3]]))
+
+from sklearn.metrics import confusion_matrix
+y_pred = knn.predict(X_test)
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+import matplotlib.pyplot as plt
+import seaborn as sn
+plt.figure(figsize=(7,5))
+sn.heatmap(cm, annot=True)
+plt.xlabel('Predicted')
+plt.ylabel('Truth')
+plt.show()
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, y_pred))
+
+
+Q.3 Design login form which accepts username and password (Two text box) and 
+submit button.
+
+a. On submit button click it should validate username and password and console
+ log if its valid 
+b. Validity check should be simple like username: Admin & password: Pass123
+c. If any other credentials it should say unauthorized
+
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Simple validation for username and password
+    if (username === 'Admin' && password === 'Pass123') {
+      console.log('Login successful!');
+    } else {
+      console.log('Unauthorized. Please check your credentials.');
+    }
+  };
+
+  return (
+    <div>
+        <h1>Slip 11</h1>
+      <h2>Login Form</h2>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleLogin();
+        }}
+      >
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;
+App.js
+// App.js
+import React from 'react';
+import App1 from './slip1/App';
+import App2 from './slip2/App';
+import App3 from './slip3/TodoList';
+import App4 from './slip4/App';
+import App5 from './slip5/App';
+import App6 from './slip6/App';
+import App7 from './slip7/LifecycleExample';
+import App8 from './slip8/FruitsList';
+import App9 from './slip9/FruitsList';
+import App10 from './slip10/TodoList';
+import App11 from './slip11/LoginForm';
+
+function App() {
+  return (
+    <div>
+      <h1>All Practical Slips</h1>
+      <App1 />
+      <App2 />
+      <App3 />
+      <App4 />
+      <App5 />
+      <App6 />
+      <App7 />
+      <App8 />
+      <App9 />
+      <App10 />
+      <App11 />
+    </div>
+  );
+}
+
+export default App;

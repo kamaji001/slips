@@ -1,0 +1,209 @@
+Q.1 Write a java program to implement Adapter pattern to design Heart Model to 
+Beat Model. 
+
+//package heartToBeat;
+
+//Heart Model interface
+interface HeartModel {
+ int getHeartRate();
+}
+
+//Heart Model Implementation
+class Heart implements HeartModel {
+ private int heartRate;
+
+ public Heart() {
+     // Simulate heart rate data (e.g., from a sensor)
+     this.heartRate = 0;
+ }
+
+ public int getHeartRate() {
+     return heartRate;
+ }
+
+ // Simulate changing heart rate data
+ public void generateHeartRate() {
+     heartRate = (int) (Math.random() * 100 + 60); // Generate a random heart rate between 60 and 160
+     System.out.println("Heart rate: " + heartRate + " bpm");
+ }
+}
+
+//Beat Model interface
+interface BeatModel {
+ void setBPM(int bpm);
+ int getBPM();
+}
+
+//Beat Model Implementation
+class Beat implements BeatModel {
+ private int bpm;
+
+ public void setBPM(int bpm) {
+     this.bpm = bpm;
+     System.out.println("BPM set to " + bpm);
+ }
+
+ public int getBPM() {
+     return bpm;
+ }
+}
+
+//Adapter to adapt Heart Model to Beat Model
+class HeartAdapter implements BeatModel {
+ private HeartModel heartModel;
+
+ public HeartAdapter(HeartModel heartModel) {
+     this.heartModel = heartModel;
+ }
+
+ public void setBPM(int bpm) {
+     // Heart rate doesn't have a set BPM, so we'll ignore this method
+     System.out.println("Cannot set BPM on Heart Model");
+ }
+
+ public int getBPM() {
+     int heartRate = heartModel.getHeartRate();
+     return heartRate;
+ }
+}
+
+//Main class
+public class AdapterPatternDemo {
+ public static void main(String[] args) {
+     Heart heart = new Heart();
+     Beat beat = new Beat();
+     HeartAdapter adapter = new HeartAdapter(heart);
+
+     // Use the Heart Model as if it were a Beat Model
+     int bpm = adapter.getBPM();
+     System.out.println("Initial BPM: " + bpm);
+
+     // Simulate changing heart rate data and updating the BPM
+     heart.generateHeartRate();
+     bpm = adapter.getBPM();
+     beat.setBPM(bpm);
+ }
+}
+
+Q.2 Write a python program to implement k-means algorithm on a synthetic dataset 
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
+
+# Create a synthetic dataset with three clusters
+n_samples = 300
+n_features = 2
+n_clusters = 3
+
+X, _ = make_blobs(n_samples=n_samples, n_features=n_features, centers=n_clusters, random_state=42)
+
+# Apply K-Means clustering
+kmeans = KMeans(n_clusters=n_clusters)
+print(kmeans.fit(X))
+
+# Get cluster centers and labels
+cluster_centers = kmeans.cluster_centers_
+labels = kmeans.labels_
+
+
+# Visualize the data and cluster centers
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
+plt.scatter(cluster_centers[:, 0], cluster_centers[:, 1], marker='x', c='red', s=100, label='Cluster Centers')
+plt.legend()
+plt.title('K-Means Clustering')
+plt.show()
+
+Q.3 Design login form which accepts username and password (Two text boxes) and 
+submit button.
+a. On submit button click, it should validate username and password and console
+ log if its valid
+b. Validity check should be simple like username: Admin & password: Pass123
+c. If any other credentials it should say unauthorized
+
+import React, { useState } from 'react';
+
+const LoginForm = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Simple validation for username and password
+    if (username === 'Admin' && password === 'Pass123') {
+      console.log('Login successful!');
+    } else {
+      console.log('Unauthorized. Please check your credentials.');
+    }
+  };
+
+  return (
+    <div>
+        <h1>Slip 11</h1>
+      <h2>Login Form</h2>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleLogin();
+        }}
+      >
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <br />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+export default LoginForm;
+App.js
+// App.js
+import React from 'react';
+import App1 from './slip1/App';
+import App2 from './slip2/App';
+import App3 from './slip3/TodoList';
+import App4 from './slip4/App';
+import App5 from './slip5/App';
+import App6 from './slip6/App';
+import App7 from './slip7/LifecycleExample';
+import App8 from './slip8/FruitsList';
+import App9 from './slip9/FruitsList';
+import App10 from './slip10/TodoList';
+import App11 from './slip11/LoginForm';
+
+function App() {
+  return (
+    <div>
+      <h1>All Practical Slips</h1>
+      <App1 />
+      <App2 />
+      <App3 />
+      <App4 />
+      <App5 />
+      <App6 />
+      <App7 />
+      <App8 />
+      <App9 />
+      <App10 />
+      <App11 />
+    </div>
+  );
+}
+
+export default App;

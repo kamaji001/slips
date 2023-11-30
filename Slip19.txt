@@ -1,0 +1,227 @@
+Q.1 Write a Java Program to implement command pattern to test Remote Control.
+ 
+//package remoteControl;
+
+import java.util.Scanner;
+
+//Command interface
+interface Command {
+ void execute();
+}
+
+//Concrete command: Turn on the TV
+class TvOnCommand implements Command {
+ private Tv tv;
+
+ public TvOnCommand(Tv tv) {
+     this.tv = tv;
+ }
+
+ @Override
+ public void execute() {
+     tv.turnOn();
+ }
+}
+
+//Concrete command: Turn off the TV
+class TvOffCommand implements Command {
+ private Tv tv;
+
+ public TvOffCommand(Tv tv) {
+     this.tv = tv;
+ }
+
+ @Override
+ public void execute() {
+     tv.turnOff();
+ }
+}
+
+
+
+//Receiver: The TV
+class Tv {
+
+ private boolean isOn = false;
+
+ public void turnOn() {
+     isOn = true;
+     System.out.println("TV is ON");
+ }
+
+ public void turnOff() {
+     isOn = false;
+     System.out.println("TV is OFF");
+ }
+
+
+}
+
+//Invoker: Controls the commands
+class RemoteControl {
+ private Command command;
+
+ public void setCommand(Command command) {
+     this.command = command;
+ }
+
+ public void pressButton() {
+     command.execute();
+ }
+}
+
+public class TvRemoteControlDemo {
+ public static void main(String[] args) {
+     // Create the TV and commands
+     Tv livingRoomTv = new Tv();
+     TvOnCommand tvOn = new TvOnCommand(livingRoomTv);
+     TvOffCommand tvOff = new TvOffCommand(livingRoomTv);
+
+     // Create the remote control
+     RemoteControl remote = new RemoteControl();
+
+     // Menu-driven program
+     Scanner scanner = new Scanner(System.in);
+     int choice = 0; // Initialize choice with a default value
+
+     do {
+         System.out.println("\nTV Remote Control Menu:");
+         System.out.println("1. Turn On TV");
+         System.out.println("2. Turn Off TV");
+
+         System.out.println("3. Exit");
+         System.out.print("Enter your choice: ");
+
+         if (scanner.hasNextInt()) {
+             choice = scanner.nextInt();
+             switch (choice) {
+                 case 1:
+                     remote.setCommand(tvOn);
+                     remote.pressButton();
+                     break;
+                 case 2:
+                     remote.setCommand(tvOff);
+                     remote.pressButton();
+                     break;
+
+                 case 3:
+                     System.out.println("Exiting the TV remote control.");
+                     break;
+                 default:
+                     System.out.println("Invalid choice. Please try again.");
+             }
+         } else {
+             System.out.println("Invalid input. Please enter a number.");
+             scanner.next(); // Consume invalid input
+         }
+     } while (choice != 3);
+
+     scanner.close();
+ }
+}
+
+Q.2 Write a python program to Implement Decision Tree Model for classification. 
+Use Decision_Tree_Dataset.csv. 
+
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# Load the dataset
+data = {
+    'company': [
+        'google', 'google', 'google', 'google', 'google', 'google',
+        'abc pharma', 'abc pharma', 'abc pharma', 'abc pharma',
+        'facebook', 'facebook', 'facebook', 'facebook', 'facebook', 'facebook'
+    ],
+    'job': [
+        'sales executive', 'sales executive', 'business manager', 'business manager', 'computer programmer', 'computer programmer',
+        'sales executive', 'computer programmer', 'business manager', 'business manager',
+        'sales executive', 'sales executive', 'business manager', 'business manager', 'computer programmer', 'computer programmer'
+    ],
+    'degree': [
+        'bachelors', 'masters', 'bachelors', 'masters', 'bachelors', 'masters',
+        'masters', 'bachelors', 'bachelors', 'masters',
+        'bachelors', 'masters', 'bachelors', 'masters', 'bachelors', 'masters'
+    ],
+    'salary_more_then_100k': [0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]
+}
+
+df = pd.DataFrame(data)
+
+# Encode categorical variables using Label Encoding
+label_encoder = LabelEncoder()
+df['company'] = label_encoder.fit_transform(df['company'])
+df['job'] = label_encoder.fit_transform(df['job'])
+df['degree'] = label_encoder.fit_transform(df['degree'])
+# Separate the features (X) and the target variable (y)
+X = df.drop('salary_more_then_100k', axis=1)
+y = df['salary_more_then_100k']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Decision Tree classification model
+decision_tree = DecisionTreeClassifier()
+
+# Fit the model to the training data
+decision_tree.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = decision_tree.predict(X_test)
+
+# Evaluate the model's performance
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+# Print the evaluation results
+print("Accuracy:", accuracy)
+print("Confusion Matrix:\n", conf_matrix)
+print("Classification Report:\n", report)
+
+Q.3 Implement useEffect hook and print all three life cycle states
+a. e.g Inside mount
+b. e.g Inside update
+c. e.g Inside unmount
+
+LifeCycle.jsx
+import React, { useState, useEffect } from 'react';
+
+const LifecycleExample = () => {
+  // Mounting
+  useEffect(() => {
+    console.log('Inside mount');
+    
+    // Cleanup function (will be called on unmount)
+    return () => {
+      console.log('Inside unmount');
+    };
+  }, []);
+
+  // Updating
+  useEffect(() => {
+    console.log('Inside update');
+
+    // Cleanup function (will be called on update and unmount)
+    return () => {
+      console.log('Inside unmount (from update)');
+    };
+  });
+
+  // State for updating
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Slip 7</h1>
+      <h2>Lifecycle Example</h2>
+      <p>Current Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+    </div>
+  );
+};
+
+export default LifecycleExample;

@@ -1,0 +1,286 @@
+Q.1 Write a Java Program to implement Abstract Factory Pattern for Bank and Loan.
+ 
+package sadp;
+import java.util.*;
+import java.io.*;
+
+interface Bank
+{
+	String getBankName();
+	
+}
+class ICICI implements Bank
+{
+	public final String bn;
+	public ICICI()
+	{
+		bn="ICICI bank";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+class BOI implements Bank
+{
+	public final String bn;
+	public BOI()
+	{
+		bn="bank of india";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+class Axis implements Bank
+{
+	public final String bn;
+	public Axis()
+	{
+		bn="axix bank";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+abstract class Loan
+{
+	protected double rate;
+	abstract void getIntrestRate(double rate);
+	public void CalculateLoanPayment(double la,int y)
+	{
+		double EMI;
+		int num;
+		num=y+12;
+		rate=rate/1200;
+		EMI=((rate+Math.pow((1+rate),num))/((Math.pow((1+rate),num))-1))*la;
+		System.out.println("ur monthlu emi is" +EMI +"for amount "+la+" u have borrowed");
+	}
+}
+class HouseLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class BLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class CarLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class ELoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+abstract class AbstractFactory
+{
+	public abstract Bank getBank(String bank);
+	public abstract Loan getLoan(String loan);
+}
+class BankFactory extends AbstractFactory
+{
+	public Bank getBank(String bank)
+	
+	{
+	if(bank==null)
+	{
+		return null;
+	}
+	else if(bank.equalsIgnoreCase("BOI"))
+	{
+		return new BOI();
+	}
+	else if(bank.equalsIgnoreCase("ICICI"))
+	{
+		return new ICICI();
+	}
+	
+	else
+	{
+		return null;
+	}
+	}
+	public Loan getLoan(String loan) {
+		return null;
+	}
+}
+class LoanFactory extends AbstractFactory
+{
+	public Bank getBank(String bank) {
+		return null;
+	}
+public Loan getLoan(String loan)
+	
+	{
+	if(loan==null)
+	{
+		return null;
+	}
+	else if(loan.equalsIgnoreCase("House Loan"))
+	{
+		return new HouseLoan();
+	}
+	else if(loan.equalsIgnoreCase("Education Loan"))
+	{
+		return new ELoan();
+	}
+	else
+	{
+		return null;
+	}
+}
+class FactoryCreator
+{
+	public static AbstractFactory getFactory(String ch)
+	{
+		if(ch.equalsIgnoreCase("Bank"))
+		{
+			return new BankFactory();
+		}
+		else if(ch.equalsIgnoreCase("Loan"))
+		{
+			return new LoanFactory();
+		}
+		else
+		{
+			return null;
+		}
+	}
+		
+	}
+}
+public class AbstractFactoryDP {
+
+	public static void main(String[] args)throws IOException {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("1:bank\n2:Loan");
+		int n=sc.nextInt();
+		switch(n)
+		{
+		case 1:	AbstractFactory BankFactory=sadp.LoanFactory.FactoryCreator.getFactory("bank");
+				System.out.println("Enter bank name:");
+				String bname=br.readLine();		
+				Bank b=BankFactory.getBank(bname);
+				System.out.println("\nur accout for "+b.getBankName()+" is created");
+				break;
+		case 2:	AbstractFactory LoanFactory=sadp.LoanFactory.FactoryCreator.getFactory("loan");
+				System.out.println("Enter type of loan:");
+				String lname=br.readLine();
+				
+				System.out.println("Enter loan amount:");
+				double lamount =Double.parseDouble(br.readLine());
+				
+				System.out.println("Enter intrest rate:");
+				double rate=Double.parseDouble(br.readLine());
+				
+				System.out.println("\nEnter years ");
+				int years=Integer.parseInt(br.readLine());
+				
+				Loan l=LoanFactory.getLoan(lname);
+				l.getIntrestRate(rate);
+				l.CalculateLoanPayment(lamount,years);
+				break;
+				
+		default:	System.out.println("wrong ch");
+				
+		}
+	}
+
+}
+
+Q.2 Write a python program to Implement Naïve Bayes for classification. Use 
+titanic.csv/spam.csv dataset. [20]
+import pandas as pd
+df = pd.read_csv("./titanic.csv")
+df.head()
+
+df.drop(['PassengerId','Name','SibSp','Parch','Ticket','Cabin','Embarked'],axis='columns',inplace=True)
+df.head()
+
+inputs = df.drop('Survived',axis='columns')
+target = df.Survived
+
+dummies = pd.get_dummies(inputs.Sex)
+print(dummies.head(3))
+
+inputs = pd.concat([inputs,dummies],axis='columns')
+inputs.head(3)
+
+inputs.drop(['Sex','male'],axis='columns',inplace=True)
+inputs.head(3)
+
+inputs.columns[inputs.isna().any()]
+
+inputs.Age[:10]
+
+inputs.Age = inputs.Age.fillna(inputs.Age.mean())
+inputs.head()
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(inputs,target,test_size=0.3)
+
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+
+model.fit(X_train,y_train)
+
+model.score(X_test,y_test)
+
+X_test[0:10]
+
+y_test[0:10]
+
+print(model.predict(X_test[0:10]))
+
+print(model.predict_proba(X_test[:10]))
+
+from sklearn.model_selection import cross_val_score
+print(cross_val_score(GaussianNB(),X_train, y_train, cv=5))
+
+
+Q.3 Print below array elements using map:
+const weekDays = [“Monday”, “Tuesday”, “Wednesday”, “Thursday”, 
+“Friday”, “Saturday”, “Sunday”]
+App.js
+import React from 'react';
+
+const WeekDaysList = () => {
+  const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  return (
+    <div>
+    <h1>Slip 5</h1>
+      <h2>Week Days</h2>
+      <ul>
+        {weekDays.map((day, index) => (
+          <li key={index}>{day}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default WeekDaysList;

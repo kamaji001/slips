@@ -1,0 +1,336 @@
+Q.1 Write a Java Program to implement Abstract Factory Pattern for Bank and Loan. 
+ 
+package sadp;
+import java.util.*;
+import java.io.*;
+
+interface Bank
+{
+	String getBankName();
+	
+}
+class ICICI implements Bank
+{
+	public final String bn;
+	public ICICI()
+	{
+		bn="ICICI bank";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+class BOI implements Bank
+{
+	public final String bn;
+	public BOI()
+	{
+		bn="bank of india";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+class Axis implements Bank
+{
+	public final String bn;
+	public Axis()
+	{
+		bn="axix bank";
+	}
+	public String getBankName()
+	{
+		return bn;
+		
+	}
+}
+
+abstract class Loan
+{
+	protected double rate;
+	abstract void getIntrestRate(double rate);
+	public void CalculateLoanPayment(double la,int y)
+	{
+		double EMI;
+		int num;
+		num=y+12;
+		rate=rate/1200;
+		EMI=((rate+Math.pow((1+rate),num))/((Math.pow((1+rate),num))-1))*la;
+		System.out.println("ur monthlu emi is" +EMI +"for amount "+la+" u have borrowed");
+	}
+}
+class HouseLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class BLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class CarLoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+class ELoan extends Loan
+{
+	public void getIntrestRate(double r)
+	{
+		rate=r;
+	}
+}
+abstract class AbstractFactory
+{
+	public abstract Bank getBank(String bank);
+	public abstract Loan getLoan(String loan);
+}
+class BankFactory extends AbstractFactory
+{
+	public Bank getBank(String bank)
+	
+	{
+	if(bank==null)
+	{
+		return null;
+	}
+	else if(bank.equalsIgnoreCase("BOI"))
+	{
+		return new BOI();
+	}
+	else if(bank.equalsIgnoreCase("ICICI"))
+	{
+		return new ICICI();
+	}
+	
+	else
+	{
+		return null;
+	}
+	}
+	public Loan getLoan(String loan) {
+		return null;
+	}
+}
+class LoanFactory extends AbstractFactory
+{
+	public Bank getBank(String bank) {
+		return null;
+	}
+public Loan getLoan(String loan)
+	
+	{
+	if(loan==null)
+	{
+		return null;
+	}
+	else if(loan.equalsIgnoreCase("House Loan"))
+	{
+		return new HouseLoan();
+	}
+	else if(loan.equalsIgnoreCase("Education Loan"))
+	{
+		return new ELoan();
+	}
+	else
+	{
+		return null;
+	}
+}
+class FactoryCreator
+{
+	public static AbstractFactory getFactory(String ch)
+	{
+		if(ch.equalsIgnoreCase("Bank"))
+		{
+			return new BankFactory();
+		}
+		else if(ch.equalsIgnoreCase("Loan"))
+		{
+			return new LoanFactory();
+		}
+		else
+		{
+			return null;
+		}
+	}
+		
+	}
+}
+public class AbstractFactoryDP {
+
+	public static void main(String[] args)throws IOException {
+		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		System.out.println("1:bank\n2:Loan");
+		int n=sc.nextInt();
+		switch(n)
+		{
+		case 1:	AbstractFactory BankFactory=sadp.LoanFactory.FactoryCreator.getFactory("bank");
+				System.out.println("Enter bank name:");
+				String bname=br.readLine();		
+				Bank b=BankFactory.getBank(bname);
+				System.out.println("\nur accout for "+b.getBankName()+" is created");
+				break;
+		case 2:	AbstractFactory LoanFactory=sadp.LoanFactory.FactoryCreator.getFactory("loan");
+				System.out.println("Enter type of loan:");
+				String lname=br.readLine();
+				
+				System.out.println("Enter loan amount:");
+				double lamount =Double.parseDouble(br.readLine());
+				
+				System.out.println("Enter intrest rate:");
+				double rate=Double.parseDouble(br.readLine());
+				
+				System.out.println("\nEnter years ");
+				int years=Integer.parseInt(br.readLine());
+				
+				Loan l=LoanFactory.getLoan(lname);
+				l.getIntrestRate(rate);
+				l.CalculateLoanPayment(lamount,years);
+				break;
+				
+		default:	System.out.println("wrong ch");
+				
+		}
+	}
+
+}
+
+Q.2 Write a python program to implement linear SVM for Regression. Use 
+position_sal.csv
+
+
+import pandas as pd
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+iris.feature_names
+
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df.head()
+
+df['target'] = iris.target
+df.head()
+
+df[df.target==1].head()
+
+df[df.target==2].head()
+
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+df[45:55]
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+import matplotlib.pyplot as plt
+
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='.')
+plt.show()
+plt.xlabel('Petal Length')
+plt.ylabel('Petal Width')
+plt.scatter(df0['petal length (cm)'], df0['petal width (cm)'],color="green",marker='+')
+plt.scatter(df1['petal length (cm)'], df1['petal width (cm)'],color="blue",marker='.')
+plt.show()
+from sklearn.model_selection import train_test_split
+
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+print(X)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+len(X_train)
+
+len(X_test)
+
+from sklearn.svm import SVC
+model = SVC()
+
+model.fit(X_train, y_train)
+
+model.score(X_test, y_test)
+
+model.predict([[4.8,3.0,1.5,0.3]])
+
+model_C = SVC(C=1)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_C = SVC(C=20)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_g = SVC(gamma=10)
+model_g.fit(X_train, y_train)
+print(model_g.score(X_test, y_test))
+
+model_linear_kernal = SVC(kernel='rbf')  
+model_linear_kernal.fit(X_train, y_train)
+print(model_linear_kernal.score(X_test, y_test))
+
+Q.3 Implement useEffect hook and print all three life cycle states
+a. e.g Inside mount
+b. e.g Inside update
+c. e.g Inside unmount
+
+LifeCycle.jsx
+import React, { useState, useEffect } from 'react';
+
+const LifecycleExample = () => {
+  // Mounting
+  useEffect(() => {
+    console.log('Inside mount');
+    
+    // Cleanup function (will be called on unmount)
+    return () => {
+      console.log('Inside unmount');
+    };
+  }, []);
+
+  // Updating
+  useEffect(() => {
+    console.log('Inside update');
+
+    // Cleanup function (will be called on update and unmount)
+    return () => {
+      console.log('Inside unmount (from update)');
+    };
+  });
+
+  // State for updating
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Slip 7</h1>
+      <h2>Lifecycle Example</h2>
+      <p>Current Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+    </div>
+  );
+};
+
+export default LifecycleExample;

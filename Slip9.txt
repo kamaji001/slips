@@ -1,0 +1,189 @@
+Q.1 Write a Java Program to implement Strategy Design pattern for arithmetic 
+operations. 
+
+interface Strategy
+{
+	public int Operation(int num1,int num2);
+}
+class OperationAdd implements Strategy
+{
+	public int Operation(int num1, int num2)
+	{
+		return num1 + num2;
+	}
+}
+class OperationSub implements Strategy
+{
+	public int Operation(int num1, int num2)
+	{
+		return num1 - num2;
+	}
+}
+class OperationMulti implements Strategy
+{
+	public int Operation(int num1, int num2)
+	{
+		return num1 * num2;
+	}
+}
+class Context
+{
+	private Strategy strategy;
+	public Context(Strategy strategy)
+	{
+		this.strategy = strategy;
+	}
+
+	public int excuteStrategy(int num1, int num2)
+	{
+		return strategy.Operation(num1,num2);
+	}
+} 
+
+public class StrategyDemo {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Context context = new Context(new OperationAdd());
+		System.out.println("10+5 : ="+context.excuteStrategy(10,5));
+		 context = new Context(new OperationSub());
+		System.out.println("10-5 : ="+context.excuteStrategy(10,5));
+		 context = new Context(new OperationMulti());
+		System.out.println("10*5 : ="+context.excuteStrategy(10,5));
+
+	}
+
+}
+
+Q.2 Write a python program to implement linear SVM for Classification. Use 
+iris.csv. 
+
+import pandas as pd
+from sklearn.datasets import load_iris
+iris = load_iris()
+
+iris.feature_names
+
+iris.target_names
+
+df = pd.DataFrame(iris.data,columns=iris.feature_names)
+df.head()
+
+df['target'] = iris.target
+df.head()
+
+df[df.target==1].head()
+
+df[df.target==2].head()
+
+df['flower_name'] =df.target.apply(lambda x: iris.target_names[x])
+df.head()
+
+df[45:55]
+
+df0 = df[:50]
+df1 = df[50:100]
+df2 = df[100:]
+
+import matplotlib.pyplot as plt
+
+plt.xlabel('Sepal Length')
+plt.ylabel('Sepal Width')
+plt.scatter(df0['sepal length (cm)'], df0['sepal width (cm)'],color="green",marker='+')
+plt.scatter(df1['sepal length (cm)'], df1['sepal width (cm)'],color="blue",marker='.')
+plt.show()
+plt.xlabel('Petal Length')
+plt.ylabel('Petal Width')
+plt.scatter(df0['petal length (cm)'], df0['petal width (cm)'],color="green",marker='+')
+plt.scatter(df1['petal length (cm)'], df1['petal width (cm)'],color="blue",marker='.')
+plt.show()
+from sklearn.model_selection import train_test_split
+
+X = df.drop(['target','flower_name'], axis='columns')
+y = df.target
+print(X)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+len(X_train)
+
+len(X_test)
+
+from sklearn.svm import SVC
+model = SVC()
+
+model.fit(X_train, y_train)
+
+model.score(X_test, y_test)
+
+model.predict([[4.8,3.0,1.5,0.3]])
+
+model_C = SVC(C=1)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_C = SVC(C=20)
+model_C.fit(X_train, y_train)
+print(model_C.score(X_test, y_test))
+
+model_g = SVC(gamma=10)
+model_g.fit(X_train, y_train)
+print(model_g.score(X_test, y_test))
+
+model_linear_kernal = SVC(kernel='rbf')  
+model_linear_kernal.fit(X_train, y_train)
+print(model_linear_kernal.score(X_test, y_test))
+
+Q.3 Create two components - ParentComponent, ChildComponent
+a. ParentComponent passes prop as name to ChildComponent
+b. ChildComponent displays name e.g. “ Hi <name>” 
+
+ChiledCompound.js
+// ChildComponent.jsx
+import React from 'react';
+
+const ChildComponent = (props) => {
+  return (
+    <div>
+      {/* <h2>Child Component</h2> */}
+      <p>Hi {props.name}</p>
+    </div>
+  );
+};
+
+export default ChildComponent;
+ParrentCompound.js
+// ParentComponent.jsx
+import React from 'react';
+import ChildComponent from './ChildComponent/ChildComponent';
+
+const ParentComponent = () => {
+  const name = 'Ibram'; // You can change this value
+
+  return (
+    <div>
+      {/* <h1>Parent Component</h1> */}
+      <ChildComponent name={name} />
+    </div>
+  );
+};
+
+export default ParentComponent;
+
+App.js
+// src/slip4/App.js
+import React from 'react';
+import ParentComponent from './ParentComponent/ParentComponent';
+
+
+const App = () => {
+  return (
+    <div>
+      <h1>Slip 4</h1>
+      <ParentComponent />
+    </div>
+  );
+};
+
+export default App;
